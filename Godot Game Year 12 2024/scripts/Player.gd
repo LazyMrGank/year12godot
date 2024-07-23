@@ -13,6 +13,7 @@ var direction = Vector3.ZERO
 var crouching_depth = -0.5
 var slide_timer = 0.0
 var slide_timer_max = 1.0
+var slide_vector = Vector2.ZERO
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -51,8 +52,12 @@ func _physics_process(delta):
 	
 	if Input.is_action_pressed("crouch"):
 		current_speed = crouching_speed
-		head.position.y = lerp(head.position.y, crouching_depth,delta*lerp_speed)
+		head.position.y = lerp(-head.position.y, crouching_depth,delta*lerp_speed)
 		
+		if sprinting && input_dir != Vector2.ZERO:
+			sliding = true
+			slide_timer = slide_timer_max
+			print("Slide Begin")
 		
 		standing_collision_shape_3d.disabled = true
 		crouching_collision_shape_3d.disabled = false
@@ -85,18 +90,13 @@ func _physics_process(delta):
 	else:
 		free_looking = false
 	
-	if Input.is_action_just_pressed("sliding"):
-		print("hello")
-		sliding = true
-		slide_timer = slide_timer_max
-		print("Slide Begin");
-	
 	if sliding:
 		slide_timer -= delta
 		if slide_timer <= 0:
 			sliding = false
-			print("Slide end");
+			print("Slide End")
 	
+
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
