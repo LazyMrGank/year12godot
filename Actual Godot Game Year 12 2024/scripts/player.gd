@@ -9,6 +9,7 @@ extends CharacterBody3D
 @onready var standing_collision_shape = $standing_collision_shape
 @onready var crouching_collision_shape = $crouching_collision_shape
 @onready var uncrouch_check = $uncrouch_check
+@onready var spot_light_3d = $neck/Head/eyes/Camera3D/SpotLight3D
 
 # Speed variables
 var current_speed = 5.0
@@ -17,7 +18,7 @@ var current_speed = 5.0
 @export var crouching_speed = 5.0
 
 # States
-
+#var torch = false
 var walking = false
 var sprinting = false
 var crouching = false
@@ -56,6 +57,8 @@ var air_lerp_speed = 3.0
 var crouching_depth = -0.5
 var player_height = 1.8
 var free_look_tilt_amount = 5.0
+
+var flashlight = false
 
 # Input variables
 var direction = Vector3.ZERO
@@ -142,6 +145,18 @@ func _physics_process(delta):
 			sprinting = false
 			crouching = false
 			
+	# Handle Torch
+	if Input.is_action_just_pressed("torch"):
+		if flashlight == false:
+			$neck/Head/eyes/Camera3D/SpotLight3D.light_energy = 10
+			flashlight = true
+		elif flashlight == true:
+			$neck/Head/eyes/Camera3D/SpotLight3D.light_energy = 0
+			flashlight = false
+			
+	
+	
+	
 	# Handle free looking
 	if Input.is_action_pressed("free_look") || sliding:
 		free_looking = true
