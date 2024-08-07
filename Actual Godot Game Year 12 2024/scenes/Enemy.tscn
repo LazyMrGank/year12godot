@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5pjwi43dct8k"]
+
+[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1_ax7iu"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6f5rg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d0rm6"]
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 10.0
+uv1_triplanar = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_rpqp6"]
+
+[node name="Enemy" type="CharacterBody3D"]
+script = ExtResource("1_ax7iu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_6f5rg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_d0rm6")
+mesh = SubResource("CapsuleMesh_rpqp6")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
