@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://djunwlie6gikb"]
+[gd_scene load_steps=8 format=3 uid="uid://djunwlie6gikb"]
 
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_opwgy"]
 [ext_resource type="PackedScene" uid="uid://b5u6tg7siuhu3" path="res://scenes/player.tscn" id="2_u3302"]
 [ext_resource type="PackedScene" uid="uid://b5pjwi43dct8k" path="res://scenes/Enemy.tscn" id="3_hfdtp"]
 [ext_resource type="PackedScene" uid="uid://bj71xumln7dhv" path="res://scenes/world.blend" id="3_jema1"]
+[ext_resource type="PackedScene" uid="uid://balu4xdx48te2" path="res://scenes/big_boss_enemy.tscn" id="4_j1xsf"]
 
 [sub_resource type="Environment" id="Environment_rymxl"]
 background_energy_multiplier = 0.0
@@ -15,6 +17,7 @@ polygons = [PackedInt32Array(4, 6, 5), PackedInt32Array(6, 14, 7), PackedInt32Ar
 agent_radius = 0.25
 
 [node name="world" type="Node3D"]
+script = ExtResource("1_opwgy")
 
 [node name="env" type="Node3D" parent="."]
 
@@ -3631,7 +3634,28 @@ transform = Transform3D(0.00600261, 0, -0.00799804, 0, 0.01, 0, 0.00799804, 0, 0
 [node name="Tree_temp_climate_001_1206" parent="NavigationRegion3D/world" index="1199"]
 transform = Transform3D(0.00600261, 0, -0.00799804, 0, 0.01, 0, 0.00799804, 0, 0.00600261, -101.246, 14.9745, -84.0828)
 
+[node name="BigBossEnemy" parent="NavigationRegion3D" instance=ExtResource("4_j1xsf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.48705, 9.69169, -1.19236)
+player_path = NodePath("../../player")
+
 [node name="Enemy" parent="." instance=ExtResource("3_hfdtp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.21612, 3.95994, 18.3375)
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
+visible = false
+layout_mode = 0
+offset_left = -280.0
+offset_top = -152.0
+offset_right = 1430.0
+offset_bottom = 870.0
+color = Color(0.819608, 0.25098, 0.243137, 0.517647)
+
+[connection signal="player_hit" from="player" to="." method="_on_player_player_hit"]
 
 [editable path="NavigationRegion3D/world"]

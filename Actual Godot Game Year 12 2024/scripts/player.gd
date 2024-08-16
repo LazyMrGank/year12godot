@@ -17,6 +17,7 @@ var current_speed = 5.0
 @export var sprinting_speed = 16.0
 @export var crouching_speed = 5.0
 
+signal player_hit
 # States
 #var torch = false
 var walking = false
@@ -41,6 +42,7 @@ var can_slide = true
 const head_bobbing_sprinting_speed = 22.0
 const head_bobbing_walking_speed = 14.0
 const head_bobbing_crouching_speed = 10.0
+const HIT_STAGGER = 50.0
 
 var head_bobbing_sprinting_intensity = 0.2
 var head_bobbing_walking_intensity = 0.1
@@ -242,3 +244,8 @@ func _physics_process(delta):
 		get_tree().quit()
 
 	move_and_slide()
+	
+	
+func hit(dir):
+	emit_signal("player_hit")
+	velocity += dir * HIT_STAGGER

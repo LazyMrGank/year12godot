@@ -14,7 +14,7 @@ func get_target():
 		nav_agent.target_position = player.global_transform.origin
 	movement_speed *= 1.0001
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	get_target()
 	print(movement_speed)
 	
