@@ -10,6 +10,9 @@ extends CharacterBody3D
 @onready var crouching_collision_shape = $crouching_collision_shape
 @onready var uncrouch_check = $uncrouch_check
 @onready var spot_light_3d = $neck/Head/eyes/Camera3D/SpotLight3D
+@onready var ray = $neck/Head/eyes/Camera3D/RayCast3D
+@onready var interaction_notifier = $Control/InteractionNotifier
+@onready var collection_tracker = $Control/MarginContainer/CollectionTracker
 
 # Speed variables
 var current_speed = 5.0
@@ -26,6 +29,7 @@ var crouching = false
 var free_looking = false
 var sliding = false
 var can_doublejump = true
+var items_collected = 0
 
 # Slide vars
 
@@ -74,6 +78,14 @@ func _ready():
 	# Make the mouse cursor invisible and locked to the centre of the screen
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
+func check_ray_hit():
+	if ray.is_colliding():
+		if ray.get_collider().is_in_group("Pickup"):
+			interaction_notifier.visible = true
+		if Input.is_action_just_pressed("Use"):
+			ray.get_collider().queue_free()
+			items_collected += 1
+	
 func _input(event):
 	# Make the camera movement match mouse movement
 	if event is InputEventMouseMotion:
@@ -84,7 +96,6 @@ func _input(event):
 			rotate_y(deg_to_rad(-event.relative.x * mouse_sens))
 		head.rotate_x(deg_to_rad(-event.relative.y * mouse_sens))
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-80), deg_to_rad(80))
-
 func _physics_process(delta):
 	
 	# Get the input direction and handle the movement/deceleration.

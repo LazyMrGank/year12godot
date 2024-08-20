@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bneyvrgt7u2c"]
+
+[ext_resource type="PackedScene" uid="uid://dw0pgbk14rp1s" path="res://assets/Crystal.blend" id="1_b6kdm"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_khc5y"]
+
+[node name="Pickup" type="Area3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_khc5y")
+
+[node name="Crystal" parent="." groups=["Pickup"] instance=ExtResource("1_b6kdm")]
