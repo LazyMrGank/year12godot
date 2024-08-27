@@ -80,11 +80,16 @@ func _ready():
 	
 func check_ray_hit():
 	if ray.is_colliding():
-		if ray.get_collider().is_in_group("Pickup"):
-			interaction_notifier.visible = true
-		if Input.is_action_just_pressed("Use"):
-			ray.get_collider().queue_free()
-			items_collected += 1
+		var collider = ray.get_collider()
+		if collider:
+			if ray.get_collider().is_in_group("Pickup"):
+				interaction_notifier.visible = true
+			if Input.is_action_just_pressed("collect"):
+				ray.get_collider().queue_free()
+				items_collected += 1
+				collection_tracker.text = "Items : " + str(items_collected) + " / 10"
+	else:
+		interaction_notifier.visible = false
 	
 func _input(event):
 	# Make the camera movement match mouse movement
@@ -97,9 +102,10 @@ func _input(event):
 		head.rotate_x(deg_to_rad(-event.relative.y * mouse_sens))
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-80), deg_to_rad(80))
 func _physics_process(delta):
-	
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
+	
+	check_ray_hit()
 	
 	if Input.is_physical_key_pressed(KEY_L):
 		position.y = lerp(position.y, position.y + 0.5, delta*lerp_speed)	
