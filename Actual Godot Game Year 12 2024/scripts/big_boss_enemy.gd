@@ -1,14 +1,13 @@
 extends CharacterBody3D
 
-var player = null
+@onready var player = get_parent().get_parent().get_node("player")
 var state_machine
 var SPEED  = 5.0
 const ATTACK_RANGE = 2.5
+
 @export var player_path : NodePath
 @onready var nav_agent = $NavigationAgent3D
 @onready var anim_tree = $AnimationTree
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player = get_node(player_path)
@@ -44,3 +43,4 @@ func _hit_finished():
 	if global_position.distance_to(player.global_position) < ATTACK_RANGE + 1.0:
 		var dir = global_position.direction_to(player.global_position)
 		player.hit(dir)
+		

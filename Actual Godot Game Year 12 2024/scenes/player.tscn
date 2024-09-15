@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://b5u6tg7siuhu3"]
+[gd_scene load_steps=6 format=3 uid="uid://b5u6tg7siuhu3"]
 
 [ext_resource type="Script" path="res://components/health.gd" id="2_5vp77"]
+[ext_resource type="Script" path="res://components/hurtbox.gd" id="3_gxbnt"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="3_ob08u"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tevmw"]
+radius = 1.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m04g1"]
 height = 1.2
@@ -13,6 +15,16 @@ script = ExtResource("3_ob08u")
 
 [node name="Health" type="Node3D" parent="."]
 script = ExtResource("2_5vp77")
+max_health = 1
+
+[node name="HurtBox" type="Area3D" parent="." node_paths=PackedStringArray("health")]
+collision_layer = 0
+script = ExtResource("3_gxbnt")
+health = NodePath("../Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_tevmw")
 
 [node name="standing_collision_shape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -77,3 +89,5 @@ grow_vertical = 2
 text = "Press E To Collect"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Control"]
+
+[connection signal="health_depleted" from="Health" to="." method="_on_health_health_depleted"]

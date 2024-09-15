@@ -74,6 +74,7 @@ var direction = Vector3.ZERO
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
+
 func _ready():
 	# Make the mouse cursor invisible and locked to the centre of the screen
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -266,3 +267,8 @@ func _physics_process(delta):
 func hit(dir):
 	emit_signal("player_hit")
 	velocity += dir * HIT_STAGGER
+
+
+
+func _on_health_health_depleted():
+	get_tree().quit()
