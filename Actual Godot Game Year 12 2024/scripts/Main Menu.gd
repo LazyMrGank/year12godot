@@ -1,7 +1,7 @@
 extends Control
 
 func _on_play_pressed():
-	get_tree().change_scene_to_file("res://scenes/main.tscn")
+	get_tree().change_scene_to_file("res://scenes/Level 1.tscn")
 	# Move to the play menu/game itself
 	pass # Replace with function body.
 
